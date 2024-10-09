@@ -2,22 +2,14 @@
 
 import { Store } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { useStoreModal } from "@/hooks/useStoreModal";
 import { useState } from "react";
-import { Button } from "./ui/button";
 import {
   Check,
   ChevronsUpDown,
   PlusCircle,
   Store as StoreIcon,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+
 import {
   Command,
   CommandEmpty,
@@ -26,7 +18,15 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "./ui/command";
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useStoreModal } from "@/hooks/useStoreModal";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -53,6 +53,7 @@ const StoreSwitcher = ({ className, items }: StoreSwitcherProps) => {
     setOpen(false);
     router.push(`/${store.value}`);
   };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -74,23 +75,24 @@ const StoreSwitcher = ({ className, items }: StoreSwitcherProps) => {
           <CommandInput placeholder="Search store..." />
           <CommandList>
             <CommandEmpty>No store found .</CommandEmpty>
-            <CommandGroup heading="Stores">
+            <CommandGroup>
               {formattedItems?.map((store) => (
                 <CommandItem
                   key={store.value}
                   value={store.value}
                   onSelect={() => onStoreSelect(store)}
-                  className="text-sm"
+                  className="text-sm flex justify-between"
                 >
+                  <StoreIcon className="mr-2 w-4 h-4" />
+                  {store.label}
                   <Check
                     className={cn(
-                      "mr-2 h-4 w-4",
+                      "mr-2 h-4 w-4 ml-auto",
                       currentStore?.value === store.value
                         ? "opacity-100"
                         : "opacity-0"
                     )}
                   />
-                  {store.label}
                 </CommandItem>
               ))}
             </CommandGroup>
