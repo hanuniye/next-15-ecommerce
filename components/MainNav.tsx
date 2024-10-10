@@ -3,6 +3,7 @@
 import { useParams, usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const MainNav = ({
   className,
@@ -22,7 +23,7 @@ const MainNav = ({
   return (
     <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
       {routes.map(({ path, label, active }) => (
-        <a
+        <Link
           key={path}
           href={path}
           className={cn(
@@ -31,7 +32,7 @@ const MainNav = ({
           )}
         >
           {label}
-        </a>
+        </Link>
       ))}
     </nav>
   );
