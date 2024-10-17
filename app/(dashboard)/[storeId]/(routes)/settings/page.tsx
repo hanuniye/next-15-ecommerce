@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import prisma from "@/lib/prismdb";
-import SettingForms from "@/components/SettingForms";
+import SettingForms from "./components/SettingForms";
 
 interface SettingsProps {
   params: { storeId: string };
