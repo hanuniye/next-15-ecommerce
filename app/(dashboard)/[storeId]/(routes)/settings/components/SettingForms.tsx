@@ -3,12 +3,16 @@
 import { Store } from "@prisma/client";
 import { Trash } from "lucide-react";
 import * as z from "zod";
+import toast from "react-hot-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import axios from "axios";
 
 import Heading from "@/components/ui/Heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -16,13 +20,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { Input } from "./ui/input";
-import { useState } from "react";
-import axios from "axios";
-import { useParams, useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import AlertModel from "./modals/AlertModel";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import AlertModel from "@/components/modals/AlertModel";
 
 interface SettingFormsProps {
   store: Store;
