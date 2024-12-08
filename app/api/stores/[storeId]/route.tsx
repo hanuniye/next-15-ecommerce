@@ -39,7 +39,7 @@ export const PATCH = async (
       status: 201,
     });
   } catch (error) {
-    console.error("Error updatig store:", error);
+    console.error("Error_PATCH_store:", error);
     return new Response(JSON.stringify("Internal Server Error"), {
       status: 500,
     });
@@ -75,7 +75,7 @@ export const DELETE = async (
       status: 201,
     });
   } catch (error) {
-    console.error("Error deleting store:", error);
+    console.error("Error_DELETE_store", error);
     return new Response(JSON.stringify("Internal Server Error"), {
       status: 500,
     });

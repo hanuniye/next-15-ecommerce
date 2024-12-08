@@ -14,14 +14,45 @@ model Store {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   Billboard Billboard[]
+  Category  Category[]
+  Size      Size[]
 }
 
 model Billboard {
-  id        String   @id @default(uuid())
-  lable     String
+  id        String     @id @default(uuid())
+  label     String
   imageUrl  String
+  store     Store      @relation(fields: [storeId], references: [id])
+  storeId   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Category  Category[]
+
+  @@index([storeId])
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  store       Store     @relation(fields: [storeId], references: [id])
+  storeId     String
+  billboard   Billboard @relation(fields: [billboardId], references: [id])
+  billboardId String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([storeId]) //Indexing improves the performance of queries that filter or sort by this field.
+  @@index([billboardId]) //Indexing improves the performance of queries that filter or sort by this field.
+}
+
+model Size {
+  id        String   @id @default(uuid())
+  name      String
+  value     String
   store     Store    @relation(fields: [storeId], references: [id])
   storeId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([storeId]) //Indexing improves the performance of queries that filter or sort by this field.
 }

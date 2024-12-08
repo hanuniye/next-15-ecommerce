@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import AlertModel from "@/components/modals/AlertModel";
+import ApiAlert from "@/components/ui/api-alert";
+import UseOrigin from "@/hooks/UseOrigin";
 
 interface SettingFormsProps {
   store: Store;
@@ -40,6 +42,8 @@ const SettingForms = ({ store }: SettingFormsProps) => {
 
   const params = useParams();
   const router = useRouter();
+
+  const origin = UseOrigin()
 
   const form = useForm<SettingsFormVales>({
     resolver: zodResolver(formSchema),
@@ -74,7 +78,12 @@ const SettingForms = ({ store }: SettingFormsProps) => {
 
   return (
     <>
-    <AlertModel isOpen={open} loading={loading} onClose={() => setOpen(false)} onConfirm={deleteStore}/>
+      <AlertModel
+        isOpen={open}
+        loading={loading}
+        onClose={() => setOpen(false)}
+        onConfirm={deleteStore}
+      />
       <div className="flex items-center justify-between">
         <Heading title="Settings" desc="Manage store preferences" />
         <Button
@@ -113,6 +122,8 @@ const SettingForms = ({ store }: SettingFormsProps) => {
           </Button>
         </form>
       </Form>
+      <Separator />
+      <ApiAlert descreption={`${origin}/api/${params.storeId}`} title="test" variant="public" />
     </>
   );
 };

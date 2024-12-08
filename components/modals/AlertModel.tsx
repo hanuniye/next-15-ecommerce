@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Modal from "../ui/Modal";
-import { Button } from "../ui/button";
+import Modal from "@/components/ui/Modal";
+import { Button } from "@/components/ui/button";
 
 interface AlertModelProps {
   isOpen: boolean;
@@ -24,6 +24,7 @@ const AlertModel = ({
   if (!isMounted) {
     return null;
   }
+  
   return (
     <Modal
       title="Are you sure?"
