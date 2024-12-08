@@ -28,7 +28,7 @@ export const POST = async (req: Request) => {
       status: 201,
     });
   } catch (error) {
-    console.error("Error creating store:", error);
+    console.error("Error post store:", error);
     return new Response(JSON.stringify({ message: "Internal Server Error" }), {
       status: 500,
     });

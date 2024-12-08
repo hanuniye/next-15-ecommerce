@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import StoreModal from "@/components/modals/StoreModal";
 
 const ModalProvider = () => {
+  //Avoiding hydration error
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -14,6 +15,7 @@ const ModalProvider = () => {
   if (!isMounted) {
     return null;
   }
+  //Avoiding hydration error
 
   return <StoreModal />
 };

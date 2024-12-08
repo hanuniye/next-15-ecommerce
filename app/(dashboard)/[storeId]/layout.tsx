@@ -27,6 +27,7 @@ const DashboardLayout = async ({
   if (!store) {
     redirect("/");
   }
+
   return (
     <div>
       <Navbar />

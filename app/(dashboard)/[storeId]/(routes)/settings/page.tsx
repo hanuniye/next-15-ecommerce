@@ -7,6 +7,7 @@ import SettingForms from "./components/SettingForms";
 interface SettingsProps {
   params: { storeId: string };
 }
+
 const Settings = async ({ params }: SettingsProps) => {
   const { userId } = auth();
   const { storeId } = params;

@@ -7,7 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 
 import { useStoreModal } from "@/hooks/useStoreModal";
-import Modal from "../ui/Modal";
+import Modal from "@/components/ui/Modal";
 import {
   Form,
   FormControl,
@@ -15,11 +15,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import { redirect } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -41,7 +40,7 @@ const StoreModal = () => {
       setIsLoading(true);
       const store = await axios.post("/api/stores", values);
       if (store.data.id) {
-        window.location.assign(`${store.data.id}`);
+        window.location.assign(`/${store.data.id}`);
       }
     } catch (error) {
       toast.error("Error creating store");
