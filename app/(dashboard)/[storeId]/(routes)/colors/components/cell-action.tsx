@@ -14,12 +14,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CategoryColumn } from "./columns";
+import { ColorsColumn } from "./columns";
 import { Button } from "@/components/ui/button";
 import AlertModel from "@/components/modals/AlertModel";
 
 interface CellActionPropss {
-  data: CategoryColumn;
+  data: ColorsColumn;
 }
 
 const CellAction = ({ data }: CellActionPropss) => {
@@ -31,17 +31,17 @@ const CellAction = ({ data }: CellActionPropss) => {
 
   const onCopy = () => {
     navigator.clipboard.writeText(data.id);
-    toast.success(`Billboard Id Copied to Clipboard`);
+    toast.success(`Color Id Copied to Clipboard`);
   };
 
-  const deleteCategory = async () => {
+  const deleteColor = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
+      await axios.delete(`/api/${params.storeId}/colors/${data.id}`);
       router.refresh();
-      toast.success("Category deleted.");
+      toast.success("Color deleted.");
     } catch (error) {
-      toast.error("Error deleting category");
+      toast.error("Error deleting color");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -54,7 +54,7 @@ const CellAction = ({ data }: CellActionPropss) => {
         isOpen={open}
         loading={loading}
         onClose={() => setOpen(false)}
-        onConfirm={deleteCategory}
+        onConfirm={deleteColor}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -72,7 +72,7 @@ const CellAction = ({ data }: CellActionPropss) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              router.push(`/${params.storeId}/categories/${data.id}`)
+              router.push(`/${params.storeId}/colors/${data.id}`)
             }
           >
             <Edit className="mr-2 w-4 h-4" />

@@ -1,6 +1,6 @@
 "use client";
 
-import { Size } from "@prisma/client";
+import { Color } from "@prisma/client";
 import { Trash } from "lucide-react";
 import * as z from "zod";
 import toast from "react-hot-toast";
@@ -33,28 +33,30 @@ import {
 
 const formSchema = z.object({
   name: z.string().min(3),
-  value: z.string(),
+  value: z.string().min(4).regex(/^#[0-9A-Fa-f]{6}$/, {
+    message: "string must be valid hex code character.",
+  }), //regex(/^#/) this regex is hex decimal color string
 });
 
-type SizesFormVales = z.infer<typeof formSchema>;
+type ColorFormValues = z.infer<typeof formSchema>;
 
-interface SizesFormsProps {
-  initialData: Size | null;
+interface ColorFormsProps {
+  initialData: Color | null;
 }
 
-const SizesForms = ({ initialData }: SizesFormsProps) => {
+const ColorForms = ({ initialData }: ColorFormsProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
   const params = useParams();
   const router = useRouter();
 
-  const title = initialData ? "Edit size" : "Create size";
-  const descriprion = initialData ? "Edit size" : "Add new size";
-  const textMessage = initialData ? "Size updated." : "Size created.";
+  const title = initialData ? "Edit color" : "Create color";
+  const descriprion = initialData ? "Edit color" : "Add new color";
+  const textMessage = initialData ? "Color updated." : "Color created.";
   const action = initialData ? "Save changes" : "Create";
 
-  const form = useForm<SizesFormVales>({
+  const form = useForm<ColorFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       value: "",
@@ -62,37 +64,37 @@ const SizesForms = ({ initialData }: SizesFormsProps) => {
     },
   });
 
-  const onSubmit = async (value: SizesFormVales) => {
+  const onSubmit = async (value: ColorFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
         await axios.patch(
-          `/api/${params.storeId}/sizes/${params.sizeId}`,
+          `/api/${params.storeId}/colors/${params.colorId}`,
           value
         );
       } else {
-        await axios.post(`/api/${params.storeId}/sizes`, value);
+        await axios.post(`/api/${params.storeId}/colors`, value);
       }
 
-      router.push(`/${params.storeId}/sizes`);
+      router.push(`/${params.storeId}/colors`);
       router.refresh();
       toast.success(textMessage);
     } catch (error) {
-      toast.error("Error creating size");
+      toast.error("Error creating color");
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteSize = async () => {
+  const deleteColor = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
-      router.push(`/${params.storeId}/sizes`);
+      await axios.delete(`/api/${params.storeId}/colors/${params.colorId}`);
+      router.push(`/${params.storeId}/colors`);
       router.refresh();
-      toast.success("size deleted.");
+      toast.success("color deleted.");
     } catch (error) {
-      toast.error("Error deleting size");
+      toast.error("Error deleting color");
     } finally {
       setLoading(false);
       setOpen(false);
@@ -105,7 +107,7 @@ const SizesForms = ({ initialData }: SizesFormsProps) => {
         isOpen={open}
         loading={loading}
         onClose={() => setOpen(false)}
-        onConfirm={deleteSize}
+        onConfirm={deleteColor}
       />
       <div className="flex items-center justify-between">
         <Heading title={title} desc={descriprion} />
@@ -133,7 +135,7 @@ const SizesForms = ({ initialData }: SizesFormsProps) => {
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Size name"
+                      placeholder="Color name"
                       {...field}
                     />
                   </FormControl>
@@ -148,44 +150,22 @@ const SizesForms = ({ initialData }: SizesFormsProps) => {
                 <FormItem>
                   <FormLabel>Value</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Value" {...field} />
+                    <div className="flex items-center gap-x-4">
+                      <Input
+                        disabled={loading}
+                        placeholder="Value"
+                        {...field}
+                      />
+                      <div
+                        className="border p-4 rounded-full"
+                        style={{ backgroundColor: field.value }}
+                      ></div>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name="billboardId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Billboard</FormLabel>
-                  <Select
-                    disabled={loading}
-                    defaultValue={field.value}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder="Select a billboard"
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {billboards.map((billboard) => (
-                        <SelectItem key={billboard.id} value={billboard.id}>
-                          {billboard.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
           </div>
           <Button disabled={loading} type="submit">
             {action}
@@ -196,4 +176,4 @@ const SizesForms = ({ initialData }: SizesFormsProps) => {
   );
 };
 
-export default SizesForms;
+export default ColorForms;

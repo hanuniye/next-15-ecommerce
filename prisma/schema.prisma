@@ -8,14 +8,15 @@ datasource db {
 }
 
 model Store {
-  id        String      @id @default(uuid())
-  name      String
-  user_id   String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  Billboard Billboard[]
-  Category  Category[]
-  Size      Size[]
+  id         String      @id @default(uuid())
+  name       String
+  user_id    String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  Billboards Billboard[]
+  Categories Category[]
+  Sizes      Size[]
+  colors     Color[]    @relation("StoreToColor")
 }
 
 model Billboard {
@@ -50,6 +51,18 @@ model Size {
   name      String
   value     String
   store     Store    @relation(fields: [storeId], references: [id])
+  storeId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId]) //Indexing improves the performance of queries that filter or sort by this field.
+}
+
+model Color {
+  id        String   @id @default(uuid())
+  name      String
+  value     String
+  store     Store    @relation("StoreToColor", fields: [storeId], references: [id])
   storeId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
